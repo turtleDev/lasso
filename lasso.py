@@ -135,4 +135,3 @@ def fetch(topic):
 
     result = to_unicode(result)
     return result
-
