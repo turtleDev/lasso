@@ -8,6 +8,7 @@ import re
 import requests
 import lxml.etree
 import lxml.html
+from kitchen.text.converters import to_unicode
 
 
 class config:
@@ -76,7 +77,7 @@ def fetch(topic):
     first = random.choice(first[:5])
 
     links = None
-    if not first:
+    if len(first):
         links = selector.xpath(
             '//a[@title and '
             'not(contains(@href,":")) and '
@@ -113,15 +114,25 @@ def fetch(topic):
             'not(contains(@href,"wiktionary") and '
             'not(contains(@href,"wikimedia") and '
             'not(@class="external") and '
-            'not(@class="new") and '
+            'not(@class="new") and'
             'not(contains(@title,"Edit")]')
 
     link = random.choice(links)
-    title = re.search("/wiki\/(.*)$", link)
+    link = link.xpath('@href').pop()
+    title = re.search("/wiki\/(.*)$", link).groups()[0]
     title = re.sub("\#.*", "", title)
     images = selector.xpath('//*[contains(@class,"thumbinner")]')
 
     # TODO: images
 
-    return first
+    result = lxml.html.tostring(first)
+
+    # get rid of refs
+    result = re.sub("<sup.*?>.*?</sup>", "", result);
+
+    # extract the text
+    result = re.sub('<\/?[^<>]*>', '', result)
+
+    result = to_unicode(result)
+    return result
 
