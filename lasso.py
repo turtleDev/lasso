@@ -11,8 +11,12 @@ import lxml.html
 from kitchen.text.converters import to_unicode
 
 
+__all__ = ['fetch']
+
+
 class config:
     API_URI = 'https://en.wikipedia.org/w/api.php?action=parse&format=json'
+
 
 def scaffold_payload(payload):
 
@@ -20,9 +24,10 @@ def scaffold_payload(payload):
         'prop': 'text|images',
         'uselang': 'en'}
 
-    payload = copy.deepcopy(payload);
+    payload = copy.deepcopy(payload)
     payload.update(defaults)
     return payload
+
 
 def fetch(topic):
     '''fetches data about a topic'''
@@ -41,7 +46,8 @@ def fetch(topic):
     # it redirects you to another page that may have been merged with another,
     # so we basically try to fetch the data from that other page.
     try:
-        redirect = selector.xpath('//*[contains(@class,"redirectMsg")]/a/text()').pop()
+        redirect = selector.xpath(
+            '//*[contains(@class,"redirectMsg")]/a/text()').pop()
 
         # recursively search for the next suggestion
         # XXX: can this his the recursion limit? find a better alternative
@@ -63,7 +69,8 @@ def fetch(topic):
         next_link = random.choice(disambig_links)
 
         # this _may_ throw an IndexError
-        title = re.search("/wiki\/(.*)$", next_link).groups()[0].replace("\#.*", "")
+        title = re.search(
+            "/wiki\/(.*)$", next_link).groups()[0].replace("\#.*", "")
 
         # how I wish python implmented tail call elimination :(
         return fetch(title)
@@ -128,7 +135,7 @@ def fetch(topic):
     result = lxml.html.tostring(first)
 
     # get rid of refs
-    result = re.sub("<sup.*?>.*?</sup>", "", result);
+    result = re.sub("<sup.*?>.*?</sup>", "", result)
 
     # extract the text
     result = re.sub('<\/?[^<>]*>', '', result)
