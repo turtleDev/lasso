@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
 
+'''
+
+    ahoy! welcome to lasso!
+
+    usage:
+        >>> import lasso
+        >>> for chunk in lasso.fetch('tomato'):
+        ...     print chunk
+
+    that's pretty much it.
+
+    happy hunting!
+'''
+
 import copy
 import json
 import random
