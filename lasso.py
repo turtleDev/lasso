@@ -16,7 +16,8 @@
     NOTE:
         The order in which the results come in seem to be
         random and sometimes even irrelevent. I would
-        recommend that 
+        recommend that you use some form or relevance
+        evaluation to optimize selection of follow up topics
 '''
 
 import copy
