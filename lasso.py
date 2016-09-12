@@ -66,9 +66,6 @@ def fetch(topic, chunks=5):
             redirect = selector.xpath(
                 '//*[contains(@class,"redirectMsg")]/a/text()').pop()
 
-            # # recursively search for the next suggestion
-            # # XXX: can this his the recursion limit? find a better alternative
-            # return fetch(redirect)
             payload['page'] = redirect
             continue
         except IndexError:
