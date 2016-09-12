@@ -168,7 +168,11 @@ def fetch(topic, chunks=5):
             result = re.sub('<\/?[^<>]*>', '', result)
 
             result = to_unicode(result)
-            yield result
+
+            yield {
+                'title': payload['page'],
+                'data': result}
+
             count += 1
 
         title = urllib.unquote(title)
