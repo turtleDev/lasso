@@ -12,6 +12,11 @@
     that's pretty much it.
 
     happy hunting!
+
+    NOTE:
+        The order in which the results come in seem to be
+        random and sometimes even irrelevent. I would
+        recommend that 
 '''
 
 import copy
@@ -45,7 +50,6 @@ def fetch(topic, chunks=5):
 
     while count < chunks:
 
-        print "fetching {}".format(payload['page'])
         response = requests.post(config.API_URI, payload)
 
         # TODO: add checks against response code
